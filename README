@@ -1,0 +1,132 @@
+
+
+
+Tie::Hash::TransUascetrioCnoanlt(r3i)buted Perl DoTciuem:e:nHtaasthi:o:nTransactional(3)
+
+
+NNNNAAAAMMMMEEEE
+       Tie::Hash::Transactional - A hash with checkpoints and
+       rollbacks
+
+SSSSYYYYNNNNOOOOPPPPSSSSIIIISSSS
+         use Tie::Hash::Transactional
+
+         tie my %transact_hash, 'Tie::Hash::Transactional';
+         %transact_hash = (
+           good => 'perl',
+           bad  => 'java',
+           ugly => 'tcl'
+         );
+
+         tied(%transact_hash)->checkpoint();
+         $transact_hash{indifferent} = 'C';
+
+         # hmmm ... must avoid controversial sample code, so ...
+         tied(%transact_hash)->rollback();
+
+
+DDDDEEEESSSSCCCCRRRRIIIIPPPPTTTTIIIIOOOONNNN
+       This module implements a hash with RDBMS-like
+       transactions.  You can checkpoint the hash (that is, you
+       can save its current state), and you can rollback the hash
+       (restore it to the previous saved state).  You can
+       checkpoint and rollback multiple times, as checkpointed
+       states are saved on a stack.
+
+       The following named parameters are supported:
+
+       ""(none)""
+           Currently, no named parameters are supported.  It is
+           intended that future versions will use named
+           parameters to let you apply this transactional
+           grooviness to other tied hashes.
+
+MMMMEEEETTTTHHHHOOOODDDDSSSS
+       The following methods are available.  Call them thus:
+
+       "tied(%my_hash)-"_m_e_t_h_o_d_n_a_m_e_(_);>
+
+       ""checkpoint""
+           Saves the current state of the hash onto the stack, so
+           that it can be retrieved later.
+
+       ""commit""
+           Discards all saved states from the stack.  Why bother?
+           Well, if your transactional hash contains a lot of
+           data, then if you have a load of checkpoints on the
+           stack, then it's going to consume a vast amount of
+           memory - each state on the stack is just a copy of the
+           hash as it was when you checkpointed.  Once you are
+           sure that your hash contains the data you want it to
+
+
+
+2001-06-13                 perl v5.6.1                          1
+
+
+
+
+
+Tie::Hash::TransUascetrioCnoanlt(r3i)buted Perl DoTciuem:e:nHtaasthi:o:nTransactional(3)
+
+
+           contain, and you no longer need any of the previous
+           states, you can free a lot of memory of commiting.
+
+           In a future version, which is intended to add support
+           for making other types of tied hashes transactional,
+           this method may do things too.
+
+       ""rollback""
+           Retrieve the last saved state from the stack.  Any
+           changes you have made since the last checkpoint are
+           discarded.  It is a fatal error to rollback with
+           nothing on the stack.
+
+BBBBUUUUGGGGSSSS
+       Plenty, no doubt.  Please tell me if you find any.
+
+AAAAUUUUTTTTHHHHOOOORRRR
+       David Cantrell <david@cantrell.org.uk>
+
+CCCCOOOOPPPPYYYYRRRRIIIIGGGGHHHHTTTT
+       Copyright 2001 David Cantrell.
+
+       This module is licensed under the same terms as perl
+       itself.
+
+SSSSEEEEEEEE AAAALLLLSSSSOOOO
+       _T_i_e_:_:_H_a_s_h(3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2001-06-13                 perl v5.6.1                          2
+
+
